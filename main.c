@@ -2,7 +2,7 @@
 #include "push_swap.h"
 #include <stdio.h>
 
-int	*has_duplicates(int size, char **argv)
+/* int	*has_duplicates(int size, char **argv)
 {
 	int	*numbers;
 	int	actual_num;
@@ -25,7 +25,7 @@ int	*has_duplicates(int size, char **argv)
 		numbers[i - 1] = actual_num;
 	}
 	return (numbers);
-}
+} */
 
 //Funcion para testing, acordarse de borrar
 void	print_stack(t_stack *stack)
@@ -48,35 +48,36 @@ void	sort(t_stack **stack_a)
 	stack_b = init_stack_empty((*stack_a)->size);
 	if (!stack_b)
 		return ;
-	push(&stack_b, stack_a);
-	swap(stack_a);
-	print_stack(stack_b);
+	if ((*stack_a)->size >= 3)
+	{
+		if (*(*stack_a)->items[0] > *(*stack_a)->items[2])
+			push(&stack_b, stack_a);
+		else
+			rotate(stack_a);
+	}
+	else if (*(*stack_a)->items[0] > *(*stack_a)->items[1])
+		swap(stack_a);
+	clear_stack(stack_b);
+	if (is_sorted(*stack_a) == 1)
+		sort(stack_a);
 }
 
 int	main(int argc, char **argv)
 {
-	int		i;
 	int		*numbers;
+	int		real_argc;
 	t_stack	*stack_a;
 
 	if (argc < 2)
 		exit(1);
 	else if (argc < 3)
 		return (printf("Error\n"), 1);
-	i = 0;
-	numbers = NULL;
-	while (++i < argc)
-	{
-		if (check_format_error(argv[i]) == 1 || is_out_of_range(argv[i]) == 1)
-			return (printf("Error\n"), 1);
-	}
-	numbers = has_duplicates(argc - 1, argv);
+	real_argc = number_count(argc, argv);
+	numbers = arg_type(argc, argv, real_argc);
 	if (!numbers)
 		return (printf("Error\n"), 1);
 	stack_a = init_stack(numbers, argc - 1);
 	if (!stack_a)
 		return (printf("Error\n"), free(numbers), 1);
-	sort(&stack_a);
-	print_stack(stack_a);
-	return (clear_stack(stack_a), free(numbers), 0);
+	return (sort(&stack_a), print_stack(stack_a), clear_stack(stack_a), free(numbers), 0);
 }

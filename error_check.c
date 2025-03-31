@@ -38,7 +38,7 @@ int	check_format_error(const char *str)
 		str++;
 	while (*str)
 	{
-		if (ft_isdigit(*str) == 0)
+		if (ft_isdigit(*str) == 0 && *str != ' ')
 		{
 			is_valid = 1;
 			break ;
@@ -47,4 +47,33 @@ int	check_format_error(const char *str)
 		is_valid = 0;
 	}
 	return (is_valid);
+}
+
+int	*arg_type(int argc, char **argv, int real_argc)
+{
+	char	**parsed_args;
+	char	*numbers;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (++i < argc)
+	{
+		parsed_args = ft_split(argv[i], ' ');
+		if (!parsed_args)
+			return (NULL);
+		j = -1;
+		while (parsed_args[++j])
+		{
+			if (is_out_of_range(parsed_args[j]) == 1
+				|| check_format_error(parsed_args[j]) == 1)
+			{
+				printf("Error\n");
+				exit(1);
+			}
+		}
+		clear_parsed(parsed_args);
+	}
+	numbers = has_duplicates(argc, argv);
+	return (numbers);
 }
