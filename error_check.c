@@ -1,4 +1,5 @@
 #include "push_swap.h"
+#include <stdio.h>
 
 int	is_out_of_range(const char *str)
 {
@@ -49,31 +50,55 @@ int	check_format_error(const char *str)
 	return (is_valid);
 }
 
-int	*arg_type(int argc, char **argv, int real_argc)
+static int	add_to_numbers(int **numbers, char **parsed_args, int num_count)
+{
+	int	i;
+	int	j;
+	int	actual_num;
+
+	i = -1;
+	while (parsed_args[++i])
+	{
+		if (is_out_of_range(parsed_args[i]) == 1
+			|| check_format_error(parsed_args[i]) == 1)
+			return (-1);
+		actual_num = ft_atoi(parsed_args[i]);
+		j = 0;
+		while (j < num_count)
+		{
+			if ((*numbers)[j++] == actual_num)
+				return (-1);
+		}
+		(*numbers)[num_count++] = actual_num;
+	}
+	return (num_count);
+}
+
+int	*has_duplicates(int argc, char **argv, int real_argc)
 {
 	char	**parsed_args;
-	char	*numbers;
+	int		*numbers;
+	int		num_count;
 	int		i;
-	int		j;
 
+	numbers = (int *)malloc(real_argc * sizeof(int));
+	if (!numbers)
+		return (NULL);
 	i = 0;
+	num_count = 0;
 	while (++i < argc)
 	{
 		parsed_args = ft_split(argv[i], ' ');
 		if (!parsed_args)
 			return (NULL);
-		j = -1;
-		while (parsed_args[++j])
-		{
-			if (is_out_of_range(parsed_args[j]) == 1
-				|| check_format_error(parsed_args[j]) == 1)
-			{
-				printf("Error\n");
-				exit(1);
-			}
-		}
+		num_count = add_to_numbers(&numbers, parsed_args, num_count);
 		clear_parsed(parsed_args);
+		if (num_count == -1)
+		{
+			free(numbers);
+			printf("Error\n");
+			exit(1);
+		}
 	}
-	numbers = has_duplicates(argc, argv);
 	return (numbers);
 }

@@ -41,43 +41,47 @@ void	print_stack(t_stack *stack)
 	printf("\n");
 }
 
-void	sort(t_stack **stack_a)
+/* static void	sort(t_stack **stack_a, t_stack **stack_b)
 {
-	t_stack	*stack_b;
-
-	stack_b = init_stack_empty((*stack_a)->size);
-	if (!stack_b)
-		return ;
 	if ((*stack_a)->size >= 3)
 	{
-		if (*(*stack_a)->items[0] > *(*stack_a)->items[2])
-			push(&stack_b, stack_a);
-		else
+		if (*(*stack_a)->items[0] < *(*stack_a)->items[2] && *(*stack_a)->items[0] < *(*stack_a)->items[1])
+			push(stack_b, stack_a);
+		else if (*(*stack_a)->items[0] > *(*stack_a)->items[2] && *(*stack_a)->items[0] < *(*stack_a)->items[1])
 			rotate(stack_a);
+		else if (*(*stack_a)->items[0] > *(*stack_a)->items[2] && *(*stack_a)->items[0] > *(*stack_a)->items[1])
+			reverse(stack_a);
+		else if (*(*stack_a)->items[0] < *(*stack_a)->items[2])
+			swap(stack_a);
 	}
 	else if (*(*stack_a)->items[0] > *(*stack_a)->items[1])
 		swap(stack_a);
-	clear_stack(stack_b);
 	if (is_sorted(*stack_a) == 1)
-		sort(stack_a);
-}
+		sort(stack_a, stack_b);
+} */
 
 int	main(int argc, char **argv)
 {
 	int		*numbers;
 	int		real_argc;
 	t_stack	*stack_a;
+	t_stack	*stack_b;
 
 	if (argc < 2)
 		exit(1);
-	else if (argc < 3)
-		return (printf("Error\n"), 1);
 	real_argc = number_count(argc, argv);
-	numbers = arg_type(argc, argv, real_argc);
+	if (real_argc <= 1)
+		exit(1);
+	numbers = has_duplicates(argc, argv, real_argc);
 	if (!numbers)
 		return (printf("Error\n"), 1);
-	stack_a = init_stack(numbers, argc - 1);
+	stack_a = init_stack(numbers, real_argc);
 	if (!stack_a)
 		return (printf("Error\n"), free(numbers), 1);
-	return (sort(&stack_a), print_stack(stack_a), clear_stack(stack_a), free(numbers), 0);
+	stack_b = init_stack_empty(stack_a->size);
+	if (!stack_b)
+		return (printf("Error\n"), free(numbers), 1);
+	//sort(&stack_a, &stack_b);
+	print_stack(stack_a);
+	return (clear_stack(stack_a), clear_stack(stack_b), free(numbers), 0);
 }
