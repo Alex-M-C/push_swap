@@ -1,5 +1,26 @@
 #include "push_swap.h"
 
+void	sorting(char *mode)
+{
+	if (mode[1] == '1')
+		printf("s");
+	else if (mode[1] == '2')
+		printf("p");
+	else if (mode[1] == '3')
+		printf("r");
+	else if (mode[1] == '4')
+		printf("rr");
+	if (mode[0] == '1')
+		printf("a");
+	else if (mode[0] == '2')
+		printf("b");
+	else if (mode[0] == '3')
+		printf("ss");
+	else if (mode[0] == '4')
+		printf("rrr");
+	printf("\n");
+}
+
 void	swap(t_stack **stack)
 {
 	if (!stack || (*stack)->size < 2)

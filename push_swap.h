@@ -4,6 +4,7 @@
 
 # include <stdlib.h>
 # include "./libft/libft.h"
+# include <stdio.h>
 
 typedef struct s_stack
 {
@@ -19,6 +20,8 @@ t_stack	*init_stack_empty(int size);
 int		*has_duplicates(int argc, char **argv, int real_argc);
 
 int		number_count(int argc, char **argv);
+
+void	sorting(char *mode);
 
 void	clear_stack(t_stack *stack);
 

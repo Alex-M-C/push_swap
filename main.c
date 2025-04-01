@@ -1,6 +1,5 @@
 
 #include "push_swap.h"
-#include <stdio.h>
 
 /* int	*has_duplicates(int size, char **argv)
 {
@@ -41,24 +40,22 @@ void	print_stack(t_stack *stack)
 	printf("\n");
 }
 
-/* static void	sort(t_stack **stack_a, t_stack **stack_b)
+void	sort(t_stack **stack_a, t_stack **stack_b)
 {
+	if (!stack_b)
+		printf("Hola\n");
 	if ((*stack_a)->size >= 3)
 	{
-		if (*(*stack_a)->items[0] < *(*stack_a)->items[2] && *(*stack_a)->items[0] < *(*stack_a)->items[1])
-			push(stack_b, stack_a);
-		else if (*(*stack_a)->items[0] > *(*stack_a)->items[2] && *(*stack_a)->items[0] < *(*stack_a)->items[1])
-			rotate(stack_a);
-		else if (*(*stack_a)->items[0] > *(*stack_a)->items[2] && *(*stack_a)->items[0] > *(*stack_a)->items[1])
-			reverse(stack_a);
-		else if (*(*stack_a)->items[0] < *(*stack_a)->items[2])
-			swap(stack_a);
+		if (*(*stack_a)->items[0] > *(*stack_a)->items[1])
+			return (swap(stack_a), sorting("11"));
+		if (*(*stack_a)->items[0] > *(*stack_a)->items[2])
+			return (rotate(stack_a), sorting("13"));
+		else
+			return (reverse(stack_a), sorting("14"));
 	}
-	else if (*(*stack_a)->items[0] > *(*stack_a)->items[1])
-		swap(stack_a);
-	if (is_sorted(*stack_a) == 1)
-		sort(stack_a, stack_b);
-} */
+	else
+		return (swap(stack_a), sorting("11"));
+}
 
 int	main(int argc, char **argv)
 {
@@ -81,7 +78,8 @@ int	main(int argc, char **argv)
 	stack_b = init_stack_empty(stack_a->size);
 	if (!stack_b)
 		return (printf("Error\n"), free(numbers), 1);
-	//sort(&stack_a, &stack_b);
-	print_stack(stack_a);
+	while (is_sorted(stack_a) == 1)
+		sort(&stack_a, &stack_b);
+	//print_stack(stack_a);
 	return (clear_stack(stack_a), clear_stack(stack_b), free(numbers), 0);
 }
