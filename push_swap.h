@@ -9,7 +9,6 @@
 typedef struct s_stack
 {
 	int		**items;
-	int		top;
 	int		size;
 }	t_stack;
 
@@ -36,6 +35,8 @@ int		check_format_error(const char *str);
 int		is_out_of_range(const char *str);
 
 int		is_sorted(t_stack *stack);
+
+int		is_min(t_stack *stack);
 
 void	swap(t_stack **stack);
 

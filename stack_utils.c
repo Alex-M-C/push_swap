@@ -17,7 +17,7 @@ t_stack	*init_stack_empty(int size)
 	{
 		stack->items[size] = NULL;
 	}
-	return (stack->top = -1, stack);
+	return (stack);
 }
 
 t_stack	*init_stack(int *items, int size)
@@ -46,7 +46,7 @@ t_stack	*init_stack(int *items, int size)
 		*(stack->items)[i] = items[i];
 		i++;
 	}
-	return (stack->top = 0, stack);
+	return (stack);
 }
 
 /*

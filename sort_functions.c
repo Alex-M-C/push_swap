@@ -34,26 +34,17 @@ void	swap(t_stack **stack)
 
 void	push(t_stack **stack_a, t_stack **stack_b)
 {
-	int	pos;
-
 	if (!stack_a || !stack_b || !(*stack_b)
 		|| !(*stack_b)->items || !(*stack_b)->items[0])
 		return ;
 	if (!(*stack_a) || !(*stack_a)->items)
 		return ;
-	if ((*stack_a)->size == (*stack_b)->size)
-		return ;
-	if ((*stack_a)->items[0])
-	{
-		pos = (*stack_a)->size - 1;
-		while (!(*stack_a)->items[pos])
-			pos--;
-		pos += 2;
-		while (--pos > 0)
-			*(*stack_a)->items[pos] = *(*stack_a)->items[pos - 1];
-	}
+	/* if ((*stack_a)->size == (*stack_b)->size)
+		return ; */
 	stack_grow(stack_a, *(*stack_b)->items[0]);
 	stack_reduce(stack_b);
+	if ((*stack_a)->items[0])
+		reverse(stack_a);
 }
 
 void	rotate(t_stack **stack)

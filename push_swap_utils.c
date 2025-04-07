@@ -43,6 +43,19 @@ int	is_sorted(t_stack *stack)
 	return (0);
 }
 
+int	is_min(t_stack *stack)
+{
+	int	pos;
+
+	pos = -1;
+	while (++pos < stack->size - 1)
+	{
+		if (*stack->items[0] > *stack->items[pos])
+			return (1);
+	}
+	return (0);
+}
+
 int	number_count(int argc, char **argv)
 {
 	int	count;
