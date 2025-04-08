@@ -20,6 +20,8 @@ int		*has_duplicates(int argc, char **argv, int real_argc);
 
 int		number_count(int argc, char **argv);
 
+void	sort(t_stack **stack_a, t_stack **stack_b);
+
 void	sorting(char *mode);
 
 void	clear_stack(t_stack *stack);

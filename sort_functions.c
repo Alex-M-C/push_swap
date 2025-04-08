@@ -1,5 +1,19 @@
 #include "push_swap.h"
 
+/*
+Movements:
+	-Swap a:		11
+	-Swap b:		21
+	-Swap a,b:		03
+	-Push a:		12
+	-Push b:		22
+	-Rotate a:		13
+	-Rotate b:		23
+	-Rotate a,b:	40
+	-Reverse a:		14
+	-Reverse b:		24
+	-Reverse a,b:	04
+*/
 void	sorting(char *mode)
 {
 	if (mode[1] == '1')
