@@ -9,10 +9,10 @@ Movements:
 	-Push b:		22
 	-Rotate a:		13
 	-Rotate b:		23
-	-Rotate a,b:	40
+	-Rotate a,b:	04
 	-Reverse a:		14
 	-Reverse b:		24
-	-Reverse a,b:	04
+	-Reverse a,b:	40
 */
 void	sorting(char *mode)
 {
@@ -53,8 +53,6 @@ void	push(t_stack **stack_a, t_stack **stack_b)
 		return ;
 	if (!(*stack_a) || !(*stack_a)->items)
 		return ;
-	/* if ((*stack_a)->size == (*stack_b)->size)
-		return ; */
 	stack_grow(stack_a, *(*stack_b)->items[0]);
 	stack_reduce(stack_b);
 	if ((*stack_a)->items[0])

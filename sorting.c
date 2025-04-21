@@ -1,111 +1,123 @@
 #include "push_swap.h"
 
-//Funcion para testing, acordarse de borrar
-static void	print_stack(t_stack *stack)
+int	move_cost(t_stack *stack, int to_move)
 {
+	int	moves;
+
+	moves = 0;
+	while (to_move > 0)
+	{
+		if (to_move <= stack->size / 2)
+		{
+			to_move--;
+		}
+		else
+		{
+			to_move++;
+			if (to_move == stack->size)
+				to_move = 0;
+		}
+		moves++;
+	}
+	return (moves);
+}
+
+int	calculate_cost(t_stack **a, t_stack **b, int target, int associated)
+{
+	int	pos_target;
+	int	pos_assoc;
+	int	overlap;
+
+	pos_target = get_pos(*b, target);
+	pos_assoc = get_pos(*a, associated);
+	overlap = 0;
+	if (pos_assoc <= (*a)->size / 2 && pos_target <= (*b)->size / 2)
+	{
+		if (pos_assoc < pos_target)
+			overlap = pos_assoc;
+		else
+			overlap = pos_target;
+	}
+	else if (pos_assoc > (*a)->size / 2 && pos_target > (*b)->size / 2)
+	{
+		if (((*a)->size - pos_assoc) < ((*b)->size) - pos_target)
+			overlap = (*a)->size - pos_assoc;
+		else
+			overlap = (*b)->size - pos_target;
+	}
+	return (move_cost(*b, pos_target) + move_cost(*a, pos_assoc) - overlap);
+}
+
+static void	better_move(t_stack **a, t_stack **b, int *max_b)
+{
+	int	final_positions[2];
+	int	final_cost;
+	int	target;
+	int	cost;
 	int	i;
 
-	i = 0;
-	while (i < stack->size)
+	i = -1;
+	final_cost = -1;
+	while (++i < (*a)->size)
 	{
-		printf("Pos [%i]: %i\n", i, *(stack->items)[i]);
-		i++;
+		target = find_target(b, *(*a)->items[i], *max_b);
+		cost = calculate_cost(a, b, target, *(*a)->items[i]);
+		if (final_cost == -1 || cost < final_cost)
+		{
+			final_positions[0] = get_pos(*b, target);
+			final_positions[1] = i;
+			final_cost = cost;
+		}
 	}
-	printf("\n");
+	double_move_to_start(a, b, final_positions[1], final_positions[0]);
+	push(b, a);
+	sorting("22");
+	*max_b = get_max(*b);
 }
 
-static int	*min_poss(t_stack *stack_a)
+static void	retrieve_in_order(t_stack **a, t_stack **b)
 {
-	int	*mins;
+	int	target;
 	int	i;
 
-	mins = (int *)malloc(2 * sizeof(int));
-	if (!mins)
-		return (NULL);
-	i = 2;
-	mins[0] = 0;
-	mins[1] = 1;
-	while (i < stack_a->size)
+	while ((*b)->size > 0)
 	{
-		if (*stack_a->items[i] < *stack_a->items[mins[0]])
-			mins[0] = i;
-		if (*stack_a->items[i] < *stack_a->items[mins[1]]
-			&& *stack_a->items[mins[0]] != *stack_a->items[i])
-			mins[1] = i;
-		i++;
-	}
-	return (mins);
-}
-
-void	move_min(t_stack **stack_a, int pos, int *pos2)
-{
-	while (pos > 0)
-	{
-		if (pos <= (*stack_a)->size / 2)
+		i = -1;
+		target = get_min(*a);
+		while (++i < (*a)->size)
 		{
-			rotate(stack_a);
-			sorting("13");
-			pos--;
-			*pos2 -= 1;
-			if (*pos2 < 0)
-				*pos2 = (*stack_a)->size - 1;
+			if (*(*a)->items[i] > *(*b)->items[0]
+				&& (*(*a)->items[i] < target || target <= *(*b)->items[0]))
+				target = *(*a)->items[i];
 		}
-		else if (pos > (*stack_a)->size / 2)
-		{
-			reverse(stack_a);
-			sorting("14");
-			pos++;
-			*pos2 += 1;
-			if (pos >= (*stack_a)->size)
-				pos = 0;
-			if (*pos2 >= (*stack_a)->size)
-				*pos2 = 0;
-		}
-	}
-	*pos2 -= 1;
-}
-
-void	move_to_a(t_stack **stack_a, t_stack **stack_b)
-{
-	while ((*stack_b)->size > 0)
-	{
-		if ((*stack_b)->size >= 2 && *(*stack_b)->items[0] < *(*stack_b)->items[1])
-		{
-			swap(stack_b);
-			sorting("21");
-			push(stack_a, stack_b);
-			sorting("12");
-		}
-		push(stack_a, stack_b);
+		move_to_start(a, get_pos(*a, target), 0);
+		push(a, b);
 		sorting("12");
 	}
 }
 
-void	sort(t_stack **stack_a, t_stack **stack_b)
+void	turk_sort(t_stack **a, t_stack **b)
 {
-	int	*mins;
-	int	mins_pos;
-	int	diff;
+	int	max_b;
 
-	mins_pos = 2;
-	while ((*stack_a)->size > 2)
+	if ((*a)->size > 3)
 	{
-		if (mins_pos == 2)
+		if ((*a)->size > 4)
 		{
-			mins = min_poss(*stack_a);
-			mins_pos = 0;
-			diff = 0;
+			push(b, a);
+			sorting("22");
 		}
-		if (!mins)
-			return ;
-		move_min(stack_a, mins[mins_pos++], &mins[1]);
-		push(stack_b, stack_a);
+		push(b, a);
 		sorting("22");
 	}
-	if ((*stack_a)->size == 2 && *(*stack_a)->items[0] > *(*stack_a)->items[1])
-	{
-		swap(stack_a);
-		sorting("11");
-	}
-	return (free(mins), move_to_a(stack_a, stack_b));
+	else if ((*a)->size < 3)
+		return (swap(a), sorting("11"));
+	max_b = get_max(*b);
+	while ((*a)->size > 3)
+		better_move(a, b, &max_b);
+	sort3(a);
+	if ((*a)->size == 3 && (*b)->size < 1)
+		return ;
+	retrieve_in_order(a, b);
+	move_to_start(a, get_pos(*a, get_min(*a)), 0);
 }
