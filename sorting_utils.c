@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sorting_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aleconst <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/22 12:56:03 by aleconst          #+#    #+#             */
+/*   Updated: 2025/04/22 12:56:06 by aleconst         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 void	double_move_to_start(t_stack **a, t_stack **b, int pos_a, int pos_b)
@@ -77,6 +89,8 @@ int	get_min(t_stack *stack)
 	int	min;
 	int	i;
 
+	if (stack->size < 1)
+		return (-1);
 	i = 0;
 	min = *stack->items[0];
 	while (++i < stack->size)
@@ -94,6 +108,8 @@ int	get_max(t_stack *stack)
 	int	i;
 	int	max;
 
+	if (stack->size < 1)
+		return (-1);
 	i = 0;
 	max = *stack->items[0];
 	while (++i < stack->size)
