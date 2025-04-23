@@ -107,7 +107,7 @@ int	*has_duplicates(int argc, char **argv, int real_argc)
 		if (num_count == -1)
 		{
 			free(numbers);
-			printf("Error\n");
+			ft_printf("Error\n");
 			exit(1);
 		}
 	}

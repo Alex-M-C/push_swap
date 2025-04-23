@@ -29,22 +29,22 @@ Movements:
 void	sorting(char *mode)
 {
 	if (mode[1] == '1')
-		printf("s");
+		ft_printf("s");
 	else if (mode[1] == '2')
-		printf("p");
+		ft_printf("p");
 	else if (mode[1] == '3')
-		printf("r");
+		ft_printf("r");
 	else if (mode[1] == '4')
-		printf("rr");
+		ft_printf("rr");
 	if (mode[0] == '1')
-		printf("a");
+		ft_printf("a");
 	else if (mode[0] == '2')
-		printf("b");
+		ft_printf("b");
 	else if (mode[0] == '3')
-		printf("ss");
+		ft_printf("ss");
 	else if (mode[0] == '4')
-		printf("rrr");
-	printf("\n");
+		ft_printf("rrr");
+	ft_printf("\n");
 }
 
 void	swap(t_stack **stack)
